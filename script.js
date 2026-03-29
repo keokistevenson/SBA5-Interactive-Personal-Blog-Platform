@@ -1,0 +1,1 @@
+alert("Checking if script is connected.");
