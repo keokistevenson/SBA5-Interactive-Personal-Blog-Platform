@@ -1,20 +1,22 @@
 // alert("Checking if script is connected.");
 
 // FORM CONTROLS
-const modeHeader        = document.getElementById("blog-mode");
+const modeHeader = document.getElementById("blog-mode");
 
-const txtTitle          = document.getElementById("title");
-const msgTitle          = document.getElementById("title-error");
+const txtTitle = document.getElementById("title");
+const msgTitle = document.getElementById("title-error");
 
-const txtContent        = document.getElementById("content");
-const characterCount    = document.getElementById("character-count");
-const msgContent        = document.getElementById("content-error");
+const txtContent = document.getElementById("content");
+const characterCount = document.getElementById("character-count");
+const msgContent = document.getElementById("content-error");
 
-const btnSave           = document.getElementById("save");
-const btnCancel         = document.getElementById("cancel");
+const btnSave = document.getElementById("save");
+const btnCancel = document.getElementById("cancel");
+
+const form = document.getElementById("post-form");
 
 // POSTS
-const lblNoPosts         = document.getElementById("no-posts");
+const lblNoPosts = document.getElementById("no-posts");
 
 
 // FORM VALIDATION
@@ -84,18 +86,61 @@ txtContent.addEventListener("input", () => {
     characterCount.textContent = `Characters Left: ${maxLength - txtContent.value.length}`;
 });
 
-txtTitle.addEventListener("input", function(){
+txtTitle.addEventListener("input", function () {
     validateTitle();
 })
 
-txtContent.addEventListener("input", function(){
+txtContent.addEventListener("input", function () {
     validateContent();
 })
 
-txtTitle.addEventListener("blur", function(){
+txtTitle.addEventListener("blur", function () {
     validateTitle();
 })
 
-txtContent.addEventListener("blur", function(){
+txtContent.addEventListener("blur", function () {
     validateContent();
 })
+
+function clearForm() {
+    form.reset();
+
+    // Reset validation
+    txtTitle.setCustomValidity("");
+    txtContent.setCustomValidity("");
+
+    // Clear messages
+    msgTitle.textContent = "";
+    msgContent.textContent = "";
+
+    // Reset character count
+    characterCount.textContent = "Characters Left: 5200";
+
+    // Focus back on title
+    txtTitle.focus();
+}
+
+form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    validateTitle();
+    validateContent();
+
+    if (!form.checkValidity()) {
+        form.reportValidity(); // trying something different. I didn't use this last project.
+        return;
+    }
+
+    // Make sure I get what i pay for. Playing with object
+    console.log("Saving post:", {
+        title: txtTitle.value.trim(),
+        content: txtContent.value.trim()
+    });
+
+    clearForm();
+});
+
+btnCancel.addEventListener("click", function () {
+    clearForm();
+});
+
