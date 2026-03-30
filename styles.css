@@ -21,13 +21,13 @@ body {
   background-attachment: fixed;
 }
 
-header,
+body > header,
 body > footer {
   background-color: rgba(8, 18, 36, 0.88);
   padding: 1rem 2rem;
 }
 
-header h1,
+body > header h1,
 body > footer p {
   margin: 0;
 }
@@ -189,4 +189,9 @@ textarea:focus {
 
 body > footer {
   text-align: center;
+}
+
+.form-header {
+  background: transparent;
+  padding: 0;
 }

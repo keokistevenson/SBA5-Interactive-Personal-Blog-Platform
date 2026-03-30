@@ -17,7 +17,9 @@
         <section class="post-form-section">
             <form id="post-form">
 
-                <h2 id="blog-mode">Create Post</h2>
+                <header class="form-header">
+                    <h2 id="blog-mode">Create Post</h2>
+                </header>
 
                 <label for="title">Title</label>
                 <input id="title" name="title" type="text" placeholder="Post Title" minlength="2" maxlength="153"
@@ -30,8 +32,10 @@
                 <span id="character-count" aria-live="polite">Characters Left: 5200 </span>
                 <span id="content-error" aria-live="polite"></span>
 
-                <button id="save" type="submit">Save</button>
-                <button id="cancel" type="button">Cancel</button>
+                <footer>
+                    <button id="save" type="submit">Save</button>
+                    <button id="cancel" type="button">Cancel</button>
+                </footer>
 
             </form>
         </section>

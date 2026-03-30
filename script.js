@@ -22,6 +22,8 @@ const lblNoPosts        = document.getElementById("no-posts");
 const postTemplate      = document.getElementById("post-template");
 const postsList         = document.getElementById("posts-list");
 
+// LOCAL STORAGE
+const STORAGE_KEY = "blogPosts";
 
 
 // Populate Posts
@@ -121,7 +123,7 @@ function clearForm() {
 }
 
 
-function addPostToPage(post) {
+function addNewPostToPage(post) {
     // The clone lives only in memory at this point (not the DOM).
     // cloneNode(true) deep-copies the template including all its children.
     const newPost = postTemplate.content.cloneNode(true);
@@ -151,9 +153,14 @@ function addPostToPage(post) {
     // Add the finished post to the page.
     // No document fragment needed!
     postsList.appendChild(newPost);
+
+    // Clean up task
+    lblNoPosts.hidden = true;
 }
 
 function deletePost(postElement) {
+    const postId = postElement.dataset.id;
+
     console.log("Deleting:", postElement);
 
     // Remove from DOM
@@ -163,6 +170,9 @@ function deletePost(postElement) {
     if (postsList.children.length === 0) {
         lblNoPosts.hidden = false;
     }
+
+    // Remove from localStorage
+    deletePostFromLocalStorage(postId);
 }
 
 
@@ -189,6 +199,88 @@ function editPost(postId, postElement) {
     validateContent();
 
     updateCharacterCount();
+
+    // Needed to Save 
+    form.dataset.editId = postId;
+
+    txtTitle.focus();
+}
+
+function updatePost(postId) {
+    const postElement = postsList.querySelector(`[data-id="${postId}"]`);
+
+    if (!postElement) {
+        return;
+    }
+
+    // Update values
+    postElement.querySelector(".post-title").textContent = txtTitle.value.trim();
+    postElement.querySelector(".post-content").textContent = txtContent.value.trim();
+
+    const timeEl = postElement.querySelector(".post-time");
+    const newTimestamp = new Date().toISOString();
+
+    timeEl.dateTime = newTimestamp;
+    timeEl.textContent = new Date(newTimestamp).toLocaleString();
+
+    console.log("Updated post:", postId);
+
+    // Exit edit mode
+    delete form.dataset.editId;
+    modeHeader.textContent = "Create Post";
+}
+
+function savePostToLocalStorage(post) {
+    // Get existing posts (or empty array)
+    const posts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    // Add new post to any existing posts.
+    posts.push(post);
+
+    // Save back to localStorage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+}
+
+function updatePostInLocalStorage(postId) {
+    const posts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    for (let i = 0; i < posts.length; i++) {
+        if (posts[i].id === postId) {
+            posts[i].title = txtTitle.value.trim();
+            posts[i].content = txtContent.value.trim();
+            posts[i].timestamp = new Date().toISOString();
+            break;
+        }
+    }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+}
+
+function deletePostFromLocalStorage(postId) {
+    const posts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    const updatedPosts = posts.filter(post => post.id !== postId);
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPosts));
+}
+
+function loadPostsFromLocalStorage() {
+    console.log("You are calling from the bottom of the file and I'm LOADING as you requested. SMH")
+
+    const posts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    if (posts.length === 0) {
+        lblNoPosts.hidden = false;
+        return;
+    }
+
+    // I hope this works. I'm sick of it.
+    lblNoPosts.hidden = true;
+
+    // Find all the posts and add them to the blog.
+    for (const post of posts) {
+    addNewPostToPage(post);
+    }
 }
 
 
@@ -226,18 +318,37 @@ form.addEventListener("submit", function (event) {
         return;
     }
 
-    const post = createPostObject();
+    // If this is true,  we are in edit mode. Edit id here is the post id.
+    if (form.dataset.editId) {
+        const postId = form.dataset.editId;
 
-    // Make sure I get what i pay for. Playing with object
-    console.log("Saving post:", post);
+        // update existing post
+        updatePost(form.dataset.editId);  // I would change this name but I don't feel like it.
+        updatePostInLocalStorage(postId);
 
-    addPostToPage(post);
+    } else {
+        const post = createPostObject();
 
+        // Make sure I get what i pay for. Playing with object
+        console.log("Saving post:", post);
+
+        // Create new post
+        addNewPostToPage(post);
+
+        // Then add new post to localstorage
+        savePostToLocalStorage(post);
+    }
+
+    // Clean Up Tasks!
     clearForm();
+    delete form.dataset.editId;
+    modeHeader.textContent = "Create Post";
 });
 
 btnCancel.addEventListener("click", function () {
     clearForm();
+    delete form.dataset.editId;
+    modeHeader.textContent = "Create Post";
 });
 
 // Use event delegation on the parent #postsList to handle clicks and changes
@@ -263,3 +374,5 @@ postsList.addEventListener("click", function (event) {
     }
 });
 
+// This just works?
+loadPostsFromLocalStorage();
