@@ -40,6 +40,8 @@ function validateTitle() {
     const validity = txtTitle.validity;
     const trimmedTitle = txtTitle.value.trim();
 
+    console.log("Yes, Title is being validated.");
+
     txtTitle.setCustomValidity(""); // reset
 
     // validity.valueMissing doesn't check for empty string
@@ -68,6 +70,8 @@ function validateContent() {
     const validity = txtContent.validity;
     const trimmedContent = txtContent.value.trim();
 
+    console.log("Yes, Content is being validated.");
+
     txtContent.setCustomValidity(""); // reset
 
     // validity.valueMissing doesn't check for empty string
@@ -91,6 +95,11 @@ function validateContent() {
     }
 
     msgContent.textContent = txtContent.validationMessage;
+}
+
+function updateCharacterCount() {
+    const maxLength = 5200;
+    characterCount.textContent = `Characters Left: ${maxLength - txtContent.value.length}`;
 }
 
 function clearForm() {
@@ -156,6 +165,7 @@ function deletePost(postElement) {
     }
 }
 
+
 function editPost(postId, postElement) {
     console.log("Editing:", postId);
 
@@ -173,6 +183,12 @@ function editPost(postId, postElement) {
 
     // Change the mode
     modeHeader.textContent = "Edit Post";
+
+    // Validate changes to remove error message when loading edit
+    validateTitle();
+    validateContent();
+
+    updateCharacterCount();
 }
 
 
