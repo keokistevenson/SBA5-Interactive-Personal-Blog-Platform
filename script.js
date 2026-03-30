@@ -144,6 +144,18 @@ function addPostToPage(post) {
     postsList.appendChild(newPost);
 }
 
+function deletePost(postElement) {
+    console.log("Deleting:", postElement);
+
+    // Remove from DOM
+    postElement.remove();
+
+    // Show "no posts" if empty
+    if (postsList.children.length === 0) {
+        lblNoPosts.hidden = false;
+    }
+}
+
 
 // EVENTS
 txtContent.addEventListener("input", () => {
@@ -191,5 +203,23 @@ form.addEventListener("submit", function (event) {
 
 btnCancel.addEventListener("click", function () {
     clearForm();
+});
+
+// Use event delegation on the parent #postsList to handle clicks and changes
+// This approach is so different from dynamic shopping cart.
+postsList.addEventListener("click", function (event) {
+    const target = event.target;
+
+    // Find the closest post (Make sure click on an actual post.)
+    const postElement = target.closest(".post");
+    if (!postElement) return;
+
+    // Get the ID of the post.
+    const postId = postElement.dataset.id;
+
+    // The work around flipping form dataset.id to classList is a nightmare mindbender.
+    if (target.classList.contains("delete-btn")) {
+        deletePost(postElement);
+    }
 });
 

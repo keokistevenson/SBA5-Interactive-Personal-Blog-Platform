@@ -141,10 +141,13 @@ textarea:focus {
 }
 
 #no-posts {
-  display: inline-block;
   margin-top: 0.5rem;
   color: #667085;
   font-style: italic;
+}
+
+#no-posts[hidden] {
+  display: none;
 }
 
 .post {
