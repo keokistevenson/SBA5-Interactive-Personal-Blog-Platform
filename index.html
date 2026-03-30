@@ -17,14 +17,16 @@
         <section class="post-form-section">
             <form id="post-form">
 
-                <h2 id="blog-mode">Page Function</h2>
+                <h2 id="blog-mode">Create Post</h2>
 
                 <label for="title">Title</label>
-                <input id="title" name="title" type="text" placeholder="Post Title" minlength="2" maxlength="153" required>
+                <input id="title" name="title" type="text" placeholder="Post Title" minlength="2" maxlength="153"
+                    required>
                 <span id="title-error" aria-live="polite"></span>
 
                 <label for="content">Content</label>
-                <textarea id="content" name="content" placeholder="I can't post less than 10 characters so get with it!" minlength="10" maxlength="5200" required></textarea>
+                <textarea id="content" name="content" placeholder="I can't post less than 10 characters so get with it!"
+                    minlength="10" maxlength="5200" required></textarea>
                 <span id="character-count" aria-live="polite">Characters Left: 5200 </span>
                 <span id="content-error" aria-live="polite"></span>
 
@@ -39,27 +41,36 @@
             <h2>Posts</h2>
             <span id="no-posts" hidden>No posts available.</span>
 
-            <article class="post-template" hidden>
-                <header>
-                    <h3 class="post-title">Post Title</h3>
-                    <p class="timestamp">
-                        <time datetime="2026-03-29">March 29, 2026</time> <!--No sure how this works-->
-                    </p>
-                </header>
+            <!-- THIS is where posts will display -->
+            <div id="posts-list"></div>
 
-                <div class="content">
-                    <p>Put stuff here.</p>
-                </div>
 
-                <footer>
-                    <button class="edit-btn" type="button">Edit</button>
-                    <button class="delete-btn" type="button">Delete</button>
-                </footer>
-            </article>
 
+            <!-- Template is best alternative to putting hidden in article. This is automatically hidden.-->
+            <template id="post-template">
+                <article class="post">
+                    <header>
+                        <h3 class="post-title"></h3>
+                        <p class="timestamp">
+                            <time class="post-time" datetime=""></time>
+                        </p>
+                    </header>
+
+                    <div class="content">
+                        <p class="post-content"></p>
+                    </div>
+
+                    <footer>
+                        <button class="edit-btn" type="button">Edit</button>
+                        <button class="delete-btn" type="button">Delete</button>
+                    </footer>
+                </article>
+            </template>
         </section>
     </main>
-    <footer>Copyright © 2026</footer>
+    <footer>
+        <p>Copyright &copy; 2026</p>
+    </footer>
 </body>
 
 </html>
