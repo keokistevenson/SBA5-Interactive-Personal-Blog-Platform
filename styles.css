@@ -40,9 +40,9 @@ main {
 
 .post-form-section,
 .posts {
-  background-color: rgba(255, 255, 255, 0.94);
+  background-color: rgba(255, 255, 255, 0.86);
   color: #1f2937;
-  border-radius: 14px;
+  border-radius: 7px;
   padding: 1.5rem;
   margin-bottom: 2rem;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
