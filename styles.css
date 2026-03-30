@@ -2,6 +2,8 @@ body {
     background-color: black;
 }
 
+header,
+footer,
 section {
     background-color: gray;
 }
