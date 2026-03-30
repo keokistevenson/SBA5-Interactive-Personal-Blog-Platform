@@ -156,7 +156,7 @@ function deletePost(postElement) {
     }
 }
 
-function editPost(postId) {
+function editPost(postId, postElement) {
     console.log("Editing:", postId);
 
     // God I still have to do storage!!!
@@ -169,6 +169,7 @@ function editPost(postId) {
     // Populate form with article content.
     txtTitle.value = title;
     txtContent.value = content;
+    console.log(`Editing: Title: ${title} and Content: ${content}`);
 
     // Change the mode
     modeHeader.textContent = "Edit Post";
@@ -242,7 +243,7 @@ postsList.addEventListener("click", function (event) {
 
     // The work around flipping form dataset.id to classList is a nightmare mindbender.
     if (target.classList.contains("edit-btn")) {
-        editPost(postId);
+        editPost(postId, postElement);
     }
 });
 
