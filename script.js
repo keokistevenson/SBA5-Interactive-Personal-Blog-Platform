@@ -156,6 +156,24 @@ function deletePost(postElement) {
     }
 }
 
+function editPost(postId) {
+    console.log("Editing:", postId);
+
+    // God I still have to do storage!!!
+    
+ 
+    // Getting title and content of the published blog post.
+    const title = postElement.querySelector(".post-title").textContent;
+    const content = postElement.querySelector(".post-content").textContent;
+
+    // Populate form with article content.
+    txtTitle.value = title;
+    txtContent.value = content;
+
+    // Change the mode
+    modeHeader.textContent = "Edit Post";
+}
+
 
 // EVENTS
 txtContent.addEventListener("input", () => {
@@ -220,6 +238,11 @@ postsList.addEventListener("click", function (event) {
     // The work around flipping form dataset.id to classList is a nightmare mindbender.
     if (target.classList.contains("delete-btn")) {
         deletePost(postElement);
+    }
+
+    // The work around flipping form dataset.id to classList is a nightmare mindbender.
+    if (target.classList.contains("edit-btn")) {
+        editPost(postId);
     }
 });
 
