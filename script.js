@@ -1,24 +1,40 @@
 // alert("Checking if script is connected.");
 
 // FORM CONTROLS
-const modeHeader = document.getElementById("blog-mode");
+const modeHeader        = document.getElementById("blog-mode");
 
-const txtTitle = document.getElementById("title");
-const msgTitle = document.getElementById("title-error");
+const txtTitle          = document.getElementById("title");
+const msgTitle          = document.getElementById("title-error");
 
-const txtContent = document.getElementById("content");
-const characterCount = document.getElementById("character-count");
-const msgContent = document.getElementById("content-error");
+const txtContent        = document.getElementById("content");
+const characterCount    = document.getElementById("character-count");
+const msgContent        = document.getElementById("content-error");
 
-const btnSave = document.getElementById("save");
-const btnCancel = document.getElementById("cancel");
+const btnSave           = document.getElementById("save");
+const btnCancel         = document.getElementById("cancel");
 
-const form = document.getElementById("post-form");
+const form              = document.getElementById("post-form");
 
 // POSTS
-const lblNoPosts = document.getElementById("no-posts");
+const lblNoPosts        = document.getElementById("no-posts");
+
+// TEMPLATE CONTROLS
+const postTemplate      = document.getElementById("post-template");
+const postsList         = document.getElementById("posts-list");
 
 
+
+// Populate Posts
+function createPostObject() {
+    return {
+        id: Date.now().toString(), // This is a new idea to me. Does not produce a readable date. Milliseconds?
+        title: txtTitle.value.trim(),
+        content: txtContent.value.trim(),
+        timestamp: new Date().toISOString()
+    };
+}
+
+// FUNCTIONS
 // FORM VALIDATION
 function validateTitle() {
     const validity = txtTitle.validity;
@@ -77,7 +93,56 @@ function validateContent() {
     msgContent.textContent = txtContent.validationMessage;
 }
 
+function clearForm() {
+    form.reset();
 
+    // Reset validation
+    txtTitle.setCustomValidity("");
+    txtContent.setCustomValidity("");
+
+    // Clear messages
+    msgTitle.textContent = "";
+    msgContent.textContent = "";
+
+    // Reset character count
+    characterCount.textContent = "Characters Left: 5200";
+
+    // Focus back on title
+    txtTitle.focus();
+}
+
+
+function addPostToPage(post) {
+    // The clone lives only in memory at this point (not the DOM).
+    // cloneNode(true) deep-copies the template including all its children.
+    const newPost = postTemplate.content.cloneNode(true);
+
+    // Get references to the cloned elements we want to add.
+    const postArticle   = newPost.querySelector(".post");
+    const postTitle     = newPost.querySelector(".post-title");
+    const postContent   = newPost.querySelector(".post-content");
+    const postTime      = newPost.querySelector(".post-time");
+    const btnEdit       = newPost.querySelector(".edit-btn");
+    const btnDelete     = newPost.querySelector(".delete-btn");
+
+    // Store the post id in the article and on the buttons.
+    // This is pretty cool since i can't use classList.
+    postArticle.dataset.id = post.id;
+    btnEdit.dataset.id = post.id;
+    btnDelete.dataset.id = post.id;
+
+    // Fill in the post content.
+    postTitle.textContent = post.title;
+    postContent.textContent = post.content;
+
+    // Set the time
+    postTime.dateTime = post.timestamp;
+    postTime.textContent = new Date(post.timestamp).toLocaleString();
+
+    // Add the finished post to the page.
+    // No document fragment needed!
+    postsList.appendChild(newPost);
+}
 
 
 // EVENTS
@@ -102,23 +167,6 @@ txtContent.addEventListener("blur", function () {
     validateContent();
 })
 
-function clearForm() {
-    form.reset();
-
-    // Reset validation
-    txtTitle.setCustomValidity("");
-    txtContent.setCustomValidity("");
-
-    // Clear messages
-    msgTitle.textContent = "";
-    msgContent.textContent = "";
-
-    // Reset character count
-    characterCount.textContent = "Characters Left: 5200";
-
-    // Focus back on title
-    txtTitle.focus();
-}
 
 form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -131,11 +179,12 @@ form.addEventListener("submit", function (event) {
         return;
     }
 
+    const post = createPostObject();
+
     // Make sure I get what i pay for. Playing with object
-    console.log("Saving post:", {
-        title: txtTitle.value.trim(),
-        content: txtContent.value.trim()
-    });
+    console.log("Saving post:", post);
+
+    addPostToPage(post);
 
     clearForm();
 });
