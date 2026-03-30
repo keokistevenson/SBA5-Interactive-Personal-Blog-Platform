@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,53 @@
     <script defer src="script.js"></script>>
     <title>Interactive Personal Blog Platform</title>
 </head>
-<body>
-    
 
+<body>
+    <header>
+        <h1>Blog</h1>
+    </header>
+    <main>
+        <section class="post-form-section">
+            <form id="post-form">
+
+                <h2>Page Function</h2>
+
+                <label for="title">Title</label>
+                <input id="title" name="title" type="text" required>
+
+                <label for="content">Content</label>
+                <textarea id="content" name="content" required></textarea>
+
+                <button type="submit">Save </button>
+                <button type="button">Cancel</button>
+
+            </form>
+        </section>
+
+        <section class="posts">
+            <h2>Posts</h2>
+
+            <article class="post">
+                <header>
+                    <h3>Post Title</h3>
+                    <p class="timestamp">
+                        <time datetime="2026-03-29">March 29, 2026</time> <!--No sure how this works-->
+                    </p>
+                </header>
+
+                <div class="content">
+                    <p>Put stuff here.</p>
+                </div>
+
+                <footer>
+                    <button type="button">Edit</button>
+                    <button type="button">Delete</button>
+                </footer>
+            </article>
+
+        </section>
+    </main>
+    <footer> Put something here maybe. Copyright?</footer>
 </body>
+
 </html>
