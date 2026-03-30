@@ -194,14 +194,16 @@ function editPost(postId, postElement) {
     // Change the mode
     modeHeader.textContent = "Edit Post";
 
-    // Validate changes to remove error message when loading edit
-    validateTitle();
-    validateContent();
-
     updateCharacterCount();
 
     // Needed to Save 
     form.dataset.editId = postId;
+
+     // clear any old validation state/messages
+    txtTitle.setCustomValidity("");
+    txtContent.setCustomValidity("");
+    msgTitle.textContent = "";
+    msgContent.textContent = "";
 
     txtTitle.focus();
 }
