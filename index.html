@@ -20,12 +20,12 @@
                 <h2 id="blog-mode">Page Function</h2>
 
                 <label for="title">Title</label>
-                <input id="title" name="title" type="text" required>
+                <input id="title" name="title" type="text" placeholder="Post Title" minlength="2" required>
                 <span id="title-error" aria-live="polite"></span>
 
                 <label for="content">Content</label>
-                <textarea id="content" name="content" required></textarea>
-                <span id="character-count" aria-live="polite">Characters: </span>
+                <textarea id="content" name="content" laceholder="I can't post less than 10 characters so get with it!" minlength="10" maxlength="5200" required></textarea>
+                <span id="character-count" aria-live="polite">Characters Left: 5200 </span>
                 <span id="content-error" aria-live="polite"></span>
 
                 <button id="Save" type="submit">Save </button>
