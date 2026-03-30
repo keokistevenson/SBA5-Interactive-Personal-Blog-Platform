@@ -1,4 +1,4 @@
-// alert("Checking if script is connected.");
+// alert("Checking if script is connected."); 
 
 // FORM CONTROLS
 const modeHeader        = document.getElementById("blog-mode");
